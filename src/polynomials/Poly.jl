@@ -5,12 +5,16 @@ of `Polynomial`
 
 export Poly
 
+<<<<<<< HEAD
 struct Poly{T} <: AbstractPolynomial{T}
+=======
+struct Poly{T<:Number} <: AbstractPolynomial{T}
+>>>>>>> mileslucas-refactor
     coeffs::Vector{T}
     var::Symbol
     function Poly(a::AbstractVector{T}, var::SymbolLike = :x) where {T <: Number}
       # if a == [] we replace it with a = [0]
-#      Base.depwarn("Poly is deprecated and will be removed in a future release. Please use Polynomial instead", :Poly)
+      Base.depwarn("Poly is deprecated and will be removed in a future release. Please use Polynomial instead", :Poly)
       if length(a) == 0
         return new{T}(zeros(T, 1), Symbol(var))
       else

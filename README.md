@@ -18,6 +18,10 @@ julia> using Polynomials
 
 ## Usage
 
+#### Available Polynomials
+
+* `Polynomial` - Standard polynomials
+* `ChebyshevT` - Chebyshev polynomials of the first kind
 
 #### Construction and Evaluation
 
@@ -53,6 +57,7 @@ julia> p(0.1)
 #### Arithmetic
 
 The usual arithmetic operators are overloaded to work on polynomials, and combinations of polynomials and scalars.
+
 ```julia
 julia> p = Polynomial([1,2])
 Polynomial(1 + 2x)
@@ -139,22 +144,24 @@ julia> roots(Polynomial([0, 0, 1]))
 Fit a polynomial (of order `deg`) to `x` and `y` using a least-squares approximation.
 
 ```julia
-julia> xs = 1:4; ys = exp.(xs);
+julia> xs = 0:4; ys = @. exp(-xs) + sin(xs);
 
 julia> fit(xs, ys)
-Polynomial(-7.717211620141281 + 17.9146616149694x - 9.77757245502143x^2 + 2.298404288652356x^3)
+Polynomial(1.0000000000000016 + 0.059334723072240664*x + 0.39589720602859824*x^2 - 0.2845598112184312*x^3 + 0.03867830809692903*x^4)
+
+julia> fit(ChebyshevT, xs, ys, deg=2)
+ChebyshevT([0.541280671210034, -0.8990834124779993, -0.4237852336242923])
 ```
 
 Visual example:
 
-![newplot 42](https://user-images.githubusercontent.com/3156114/41799777-9ba00582-7627-11e8-94ef-15297ec8790e.png)
+![fit example](https://user-images.githubusercontent.com/14099459/70382587-9e055500-1902-11ea-8952-3f03ae08b7dc.png)
 
 #### Other methods
 
 Polynomial objects also have other methods:
 
-* 0-based indexing is used to extract the coefficients of $a_0 + a_1
-  x + a_2 x^2 + ...$, coefficients may be changed using indexing
+* 0-based indexing is used to extract the coefficients of `[a0, a1, a2, ...]`, coefficients may be changed using indexing
   notation.
 
 * `coeffs`: returns the entire coefficient vector
@@ -168,6 +175,7 @@ Polynomial objects also have other methods:
 * `conj`: finds the conjugate of a polynomial over a complex fiel
 
 * `truncate`: set to 0 all small terms in a polynomial;
+
 * `chop` chops off any small leading values that may arise due to floating point operations.
 
 * `gcd`: greatest common divisor of two polynomials.

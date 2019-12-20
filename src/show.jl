@@ -92,7 +92,6 @@ end
 """
     printpoly(io::IO, p::AbstractPolynomial, mimetype = MIME"text/plain"(); descending_powers=false, offset::Int=0, var=p.var)
 
-
 Print a human-readable representation of the polynomial `p` to `io`. The MIME
 types "text/plain" (default), "text/latex", and "text/html" are supported. By
 default, the terms are in order of ascending powers, matching the order in

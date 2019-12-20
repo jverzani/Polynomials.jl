@@ -197,7 +197,11 @@ function truncate!(
 end
 
 """
+<<<<<<< HEAD
     truncate(::AbstractPolynomial{T};
+=======
+    truncate(::AbstractPolynomial{T};
+>>>>>>> mileslucas-refactor
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0)
 
 Rounds off coefficients close to zero, as determined by `rtol` and `atol`, and then chops any leading zeros. Returns a new polynomial.
@@ -211,7 +215,11 @@ function Base.truncate(
 end
 
 """
+<<<<<<< HEAD
     chop!(::AbstractPolynomial{T};
+=======
+    chop!(::AbstractPolynomial{T};
+>>>>>>> mileslucas-refactor
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0))
 
 In-place version of [`chop`](@ref)
@@ -233,7 +241,11 @@ function chop!(
 end
 
 """
+<<<<<<< HEAD
     chop(::AbstractPolynomial{T};
+=======
+    chop(::AbstractPolynomial{T};
+>>>>>>> mileslucas-refactor
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0))
 
 Removes any leading coefficients that are approximately 0 (using `rtol` and `atol`). Returns a polynomial whose degree will guaranteed to be equal to or less than the given polynomial's.
@@ -281,6 +293,10 @@ Linear Algebra
 Calculates the p-norm of the polynomial's coefficients
 """
 LinearAlgebra.norm(q::AbstractPolynomial, p::Real = 2) = norm(coeffs(q), p)
+<<<<<<< HEAD
+=======
+
+>>>>>>> mileslucas-refactor
 """
     conj(::AbstractPolynomial)
 
