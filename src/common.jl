@@ -158,7 +158,6 @@ vander(::Type{<:AbstractPolynomial}, x::AbstractVector, deg::Integer)
 
 Returns a polynomial that is the integral of the given polynomial with constant term `k` added.
 """
-integral(::AbstractPolynomial, k::Number)
 integral(p::AbstractPolynomial) = integral(p, 0)
 
 """
@@ -172,12 +171,20 @@ function integrate(p::AbstractPolynomial, a::Number, b::Number)
 end
 
 """
+    integrate(p::AbstractPolynomial)
+
+Return the indefinite integral of `p` with constant term `0`.
+"""
+integrate(p::AbstractPolynomial) = integral(p)
+
+"""
     derivative(::AbstractPolynomial, order::Int = 1)
 
 Returns a polynomail that is the `order`th derivative of the given polynomial. `order` must be non-negative.
 """
 derivative(::AbstractPolynomial, ::Int)
 derivative(p::AbstractPolynomial) = derivative(p, 1)
+Base.diff(p::AbstractPolynomial, k::Int=1) = derivative(p, k)
 
 """
     truncate!(::AbstractPolynomial{T};
@@ -197,11 +204,7 @@ function truncate!(
 end
 
 """
-<<<<<<< HEAD
     truncate(::AbstractPolynomial{T};
-=======
-    truncate(::AbstractPolynomial{T};
->>>>>>> mileslucas-refactor
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0)
 
 Rounds off coefficients close to zero, as determined by `rtol` and `atol`, and then chops any leading zeros. Returns a new polynomial.
@@ -215,11 +218,7 @@ function Base.truncate(
 end
 
 """
-<<<<<<< HEAD
     chop!(::AbstractPolynomial{T};
-=======
-    chop!(::AbstractPolynomial{T};
->>>>>>> mileslucas-refactor
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0))
 
 In-place version of [`chop`](@ref)
@@ -293,10 +292,6 @@ Linear Algebra
 Calculates the p-norm of the polynomial's coefficients
 """
 LinearAlgebra.norm(q::AbstractPolynomial, p::Real = 2) = norm(coeffs(q), p)
-<<<<<<< HEAD
-=======
-
->>>>>>> mileslucas-refactor
 """
     conj(::AbstractPolynomial)
 

@@ -35,9 +35,13 @@ struct Polynomial{T <: Number} <: AbstractPolynomial{T}
         last = max(1, last_nz === nothing ? 0 : last_nz)
         return new{T}(coeffs[1:last], var)
     end
+    function Polynomial(var::Symbol=:x; roots::Vector{T}=Float64[]) where {T <: Number}
+        fromroots(roots, var=var)
+    end
 end
 
 @register Polynomial
+
 
 domain(::Type{<:Polynomial}) = Interval(-Inf, Inf)
 mapdomain(::Type{<:Polynomial}, x::AbstractArray) = x
@@ -72,6 +76,7 @@ function (p::Polynomial{T})(x::S) where {T,S}
     end
     return b
 end
+
 
 function fromroots(P::Type{<:Polynomial}, r::AbstractVector{T}; var::SymbolLike = :x) where {T <: Number}
     n = length(r)
@@ -159,7 +164,7 @@ function Base.divrem(num::Polynomial{T}, den::Polynomial{S}) where {T,S}
     R = typeof(one(T) / one(S))
     P = Polynomial{R}
     deg = n - m + 1
-    if deg ≤ 0 
+    if deg ≤ 0
         return zero(P), convert(P, num)
     end
     q_coeff = zeros(R, deg)
@@ -178,7 +183,7 @@ end
 function showterm(io::IO, ::Type{Polynomial{T}}, pj::T, var, j, first::Bool, mimetype) where {T}
     if pj == zero(T) return false end
     pj = printsign(io, pj, first, mimetype)
-    if !(pj == one(T) && !(showone(T) || j == 0))   
+    if !(pj == one(T) && !(showone(T) || j == 0))
         printcoefficient(io, pj, j, mimetype)
     end
     printproductsign(io, pj, j, mimetype)
