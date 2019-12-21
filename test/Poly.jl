@@ -190,13 +190,13 @@ p1  = Poly([1, 2])
 p2  = Poly([3, 1.])
 p   = [p1, p2]
 q   = [3, p1]
-@test isa(q,Vector{Poly{Int64}})
+@test isa(q,Vector{Polynomial{Int64}})
 psum  = p .+ 3
 pprod = p .* 3
 pmin  = p .- 3
-@test isa(psum, Vector{Poly{Float64}})
-@test isa(pprod,Vector{Poly{Float64}})
-@test isa(pmin, Vector{Poly{Float64}})
+@test isa(psum, Vector{Polynomial{Float64}})
+@test isa(pprod,Vector{Polynomial{Float64}})
+@test isa(pmin, Vector{Polynomial{Float64}})
 
 ## getindex with ranges #43
 p1 = Poly([4,5,6])
@@ -243,15 +243,15 @@ repr(p)
 
 ## changes to show
 p = Poly([1,2,3,1])  # leading coefficient of 1
-@test repr(p) == "Poly(1 + 2*x + 3*x^2 + x^3)"
+@test repr(p) == "Polynomial(1 + 2*x + 3*x^2 + x^3)"
 p = Poly([1.0, 2.0, 3.0, 1.0])
-@test repr(p) == "Poly(1.0 + 2.0*x + 3.0*x^2 + 1.0*x^3)"
+@test repr(p) == "Polynomial(1.0 + 2.0*x + 3.0*x^2 + 1.0*x^3)"
 p = Poly([1, im])
-@test repr(p) == "Poly(1 + im*x)"
+@test repr(p) == "Polynomial(1 + im*x)"
 p = Poly([1+im, 1-im, -1+im, -1 - im])# minus signs
-@test repr(p) == "Poly((1 + 1im) + (1 - 1im)*x - (1 - 1im)*x^2 - (1 + 1im)*x^3)"
+@test repr(p) == "Polynomial((1 + 1im) + (1 - 1im)*x - (1 - 1im)*x^2 - (1 + 1im)*x^3)"
 p = Poly([1.0, 0 + NaN*im, NaN, Inf, 0 - Inf*im]) # handle NaN or Inf appropriately
-@test repr(p) == "Poly(1.0 + NaN*im*x + NaN*x^2 + Inf*x^3 - Inf*im*x^4)"
+@test repr(p) == "Polynomial(1.0 + NaN*im*x + NaN*x^2 + Inf*x^3 - Inf*im*x^4)"
 
 p = Poly([1,2,3])
 
@@ -306,9 +306,9 @@ pint  = polyint(p, Complex(0.))
 
 ## proper conversions in arithmetic with different element-types #94
 p = Poly([0,one(Float64)])
-@test Poly{Complex{Float64}} == typeof(p+1im)
-@test Poly{Complex{Float64}} == typeof(1im-p)
-@test Poly{Complex{Float64}} == typeof(p*1im)
+@test Polynomial{Complex{Float64}} == typeof(p+1im)
+@test Polynomial{Complex{Float64}} == typeof(1im-p)
+@test Polynomial{Complex{Float64}} == typeof(p*1im)
 
 ## comparison between `Number`s and `Poly`s
 p1s = Poly([1,2], :s)
@@ -341,7 +341,7 @@ p2s = Poly([1], :s)
 # test iteration
 p1 = Poly([1,2,0,3])
 for term in p1
-  @test isa(term, Poly)
+  @test isa(term, Polynomial)
 end
 
 @test eltype(typeof(p1)) == typeof(p1)
@@ -353,9 +353,9 @@ end
 # was to direct `collect{T}(p::Poly{T})` to `collect(Poly{T}, p)`.
 
 @test eltype(p1) == Int
-@test eltype(collect(p1)) == Poly{Int}
-@test eltype(collect(Poly{Float64}, p1)) == Poly{Float64}
-@test_throws InexactError collect(Poly{Int}, Poly([1.2]))
+@test eltype(collect(p1)) == Polynomial{Int}
+@test eltype(collect(Polynomial{Float64}, p1)) == Polynomial{Float64}
+@test_throws InexactError collect(Polynomial{Int}, Polynomial([1.2]))
 
 @test length(collect(p1)) == degree(p1)+1
 

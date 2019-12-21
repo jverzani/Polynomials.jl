@@ -35,9 +35,6 @@ struct Polynomial{T <: Number} <: AbstractPolynomial{T}
         last = max(1, last_nz === nothing ? 0 : last_nz)
         return new{T}(coeffs[1:last], var)
     end
-    function Polynomial(var::Symbol=:x; roots::Vector{T}=Float64[]) where {T <: Number}
-        fromroots(roots, var=var)
-    end
 end
 
 @register Polynomial
@@ -77,6 +74,9 @@ function (p::Polynomial{T})(x::S) where {T,S}
     return b
 end
 
+function Polynomial(_var::Symbol=:x; roots::Vector{T}=Float64[], var=_var) where {T <: Number}
+    fromroots(roots, var=var)
+end
 
 function fromroots(P::Type{<:Polynomial}, r::AbstractVector{T}; var::SymbolLike = :x) where {T <: Number}
     n = length(r)
