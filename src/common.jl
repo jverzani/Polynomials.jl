@@ -116,6 +116,7 @@ function roots(p::AbstractPolynomial{T}) where {T <: Number}
     chopped_trimmed = truncate(p)
     n_trail = length(p) - length(chopped_trimmed)
     comp = companion(chopped_trimmed)
+    @show comp
     L = eigvals(rot180(comp))
     append!(L, zeros(eltype(L), n_trail))
     by = eltype(L) <: Complex ? norm : identity
@@ -167,7 +168,7 @@ Returns a polynomial that is the `order`th derivative of the given polynomial. `
 derivative(::AbstractPolynomial, ::Int)
 
 """
-    truncate!(::AbstractPolynomial{T}; 
+    truncate!(::AbstractPolynomial{T};
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0)
 
 In-place version of [`truncate`](@ref)
@@ -182,7 +183,7 @@ function truncate!(p::AbstractPolynomial{T};
 end
 
 """
-    truncate(::AbstractPolynomial{T}; 
+    truncate(::AbstractPolynomial{T};
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0)
 
 Rounds off coefficients close to zero, as determined by `rtol` and `atol`, and then chops any leading zeros. Returns a new polynomial.
@@ -194,7 +195,7 @@ function Base.truncate(p::AbstractPolynomial{T};
 end
 
 """
-    chop!(::AbstractPolynomial{T}; 
+    chop!(::AbstractPolynomial{T};
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0))
 
 In-place version of [`chop`](@ref)
@@ -214,7 +215,7 @@ function chop!(p::AbstractPolynomial{T};
 end
 
 """
-    chop(::AbstractPolynomial{T}; 
+    chop(::AbstractPolynomial{T};
         rtol::Real = Base.rtoldefault(real(T)), atol::Real = 0))
 
 Removes any leading coefficients that are approximately 0 (using `rtol` and `atol`). Returns a polynomial whose degree will guaranteed to be equal to or less than the given polynomial's.
@@ -251,7 +252,7 @@ variable(::Type{P}, var::SymbolLike = :x) where {P <: AbstractPolynomial} = P([0
 variable(p::AbstractPolynomial, var::SymbolLike = p.var) = variable(typeof(p), var)
 variable(var::SymbolLike = :x) = variable(Polynomial{Int})
 
-#= 
+#=
 Linear Algebra =#
 """
     norm(::AbstractPolynomial, p=2)
@@ -269,7 +270,7 @@ LinearAlgebra.conj(p::P) where {P <: AbstractPolynomial} = P(conj(coeffs(p)))
 LinearAlgebra.transpose(p::AbstractPolynomial) = p
 LinearAlgebra.transpose!(p::AbstractPolynomial) = p
 
-#= 
+#=
 Conversions =#
 Base.convert(::Type{P}, p::P) where {P <: AbstractPolynomial} = p
 Base.convert(P::Type{<:AbstractPolynomial}, x) = P(x)
@@ -277,7 +278,7 @@ Base.promote_rule(::Type{<:AbstractPolynomial{T}},
     ::Type{<:AbstractPolynomial{S}},
 ) where {T,S} = Polynomial{promote_type(T, S)}
 
-#= 
+#=
 Inspection =#
 """
     length(::AbstractPolynomial)
@@ -358,7 +359,7 @@ function mapdomain(P::Type{<:AbstractPolynomial}, x::AbstractArray)
 end
 mapdomain(::P, x::AbstractArray) where {P <: AbstractPolynomial} = mapdomain(P, x)
 
-#= 
+#=
 indexing =#
 Base.firstindex(p::AbstractPolynomial) = 0
 Base.lastindex(p::AbstractPolynomial) = length(p) - 1
@@ -404,7 +405,7 @@ Base.setindex!(p::AbstractPolynomial, value::Number, ::Colon) =
 Base.setindex!(p::AbstractPolynomial, values, ::Colon) =
     [setindex!(p, v, i) for (v, i) in zip(values, eachindex(p))]
 
-#= 
+#=
 identity =#
 Base.copy(p::P) where {P <: AbstractPolynomial} = P(copy(p.coeffs), p.var)
 Base.hash(p::AbstractPolynomial, h::UInt) = hash(p.var, hash(p.coeffs, h))
@@ -425,7 +426,7 @@ Returns a representation of 1 as the given polynomial.
 Base.one(::Type{P}) where {P <: AbstractPolynomial} = P(ones(1))
 Base.one(p::P) where {P <: AbstractPolynomial} = one(P)
 
-#= 
+#=
 arithmetic =#
 Base.:-(p::P) where {P <: AbstractPolynomial} = P(-p.coeffs, p.var)
 Base.:+(c::Number, p::AbstractPolynomial) = +(p, c)
@@ -503,7 +504,7 @@ Base.div(n::AbstractPolynomial, d::AbstractPolynomial) = divrem(n, d)[1]
 """
 Base.rem(n::AbstractPolynomial, d::AbstractPolynomial) = divrem(n, d)[2]
 
-#= 
+#=
 Comparisons =#
 Base.isequal(p1::P, p2::P) where {P <: AbstractPolynomial} = hash(p1) == hash(p2)
 Base.:(==)(p1::AbstractPolynomial, p2::AbstractPolynomial) =

@@ -159,7 +159,7 @@ function Base.divrem(num::Polynomial{T}, den::Polynomial{S}) where {T,S}
     R = typeof(one(T) / one(S))
     P = Polynomial{R}
     deg = n - m + 1
-    if deg ≤ 0 
+    if deg ≤ 0
         return zero(P), convert(P, num)
     end
     q_coeff = zeros(R, deg)
@@ -178,7 +178,7 @@ end
 function showterm(io::IO, ::Type{Polynomial{T}}, pj::T, var, j, first::Bool, mimetype) where {T}
     if pj == zero(T) return false end
     pj = printsign(io, pj, first, mimetype)
-    if !(pj == one(T) && !(showone(T) || j == 0))   
+    if !(pj == one(T) && !(showone(T) || j == 0))
         printcoefficient(io, pj, j, mimetype)
     end
     printproductsign(io, pj, j, mimetype)
